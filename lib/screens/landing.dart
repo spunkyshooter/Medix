@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medix/screens/liveData.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:medix/screens/medicalHistory.dart';
 import 'package:medix/screens/profile.dart';
 
 class Landing extends StatefulWidget {
@@ -9,7 +10,7 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
-  List<Widget> _pages = [LiveData(), Text("Prescription"), Profile()];
+  List<Widget> _pages = [LiveData(), MedicalHistory(), Profile()];
   int activeIdx = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   @override
