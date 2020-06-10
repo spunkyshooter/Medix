@@ -31,7 +31,8 @@ class LiveCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           image: new DecorationImage(
               image: new AssetImage('assets/images/$img'),
-              alignment: Alignment.centerRight),
+              alignment: Alignment.centerRight
+          ),
         ),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

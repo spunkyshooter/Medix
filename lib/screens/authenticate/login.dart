@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
     fontSize: 32,
     fontWeight: FontWeight.w800,
   );
-  final Map<String, dynamic> state = {"AadharNum": null, "password": null};
+  final Map<String, dynamic> state = {"email": null, "password": null};
 
   onChange(id, text) {
     setState(() {
@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
         ));
     /*
     dynamic response = await _auth.signInWithEmailAndPass(
-        state["AadharNum"], state["password"]);
+        state["email"], state["password"]);
     if (response["success"] == true) {
       Navigator.push(
           context,
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           new TopBar(titleStyle: titleStyle),
           new MyTextField(
-              id: 'AadharNum', onChange: onChange, hintText: "Aadhar Number"),
+              id: 'email', onChange: onChange, hintText: "Email"),
           new SizedBox(height: 10), //some space
           new MyTextField(
               id: 'password', onChange: onChange, hintText: "Password"),

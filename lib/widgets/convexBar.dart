@@ -3,16 +3,23 @@ import 'package:flutter/material.dart';
 //Further height and color can be customizable
 
 class ConvexBar extends StatelessWidget {
-  ConvexBar({this.height = 30});
+  ConvexBar({this.height = 30, this.color, this.child});
+
   final double height;
+  final Widget child;
+  Color color;
+
   @override
   Widget build(BuildContext context) {
+    color = color ?? Theme.of(context).primaryColor;
     return ClipPath(
       clipper: WavyClipper(),
-      child: SizedBox(
-        height: height,
-        child: Container(color: Theme.of(context).primaryColor),//Theme.of(context).primaryColor
-      ),
+      child: child != null
+          ? child
+          : SizedBox(
+              height: height,
+              child: Container(color: color), //Theme.of(context).primaryColor
+            ),
     );
   }
 }
@@ -28,8 +35,8 @@ class WavyClipper extends CustomClipper<Path> {
 
     final controlPoint = new Offset(width / 2, height);
     final endPoint = new Offset(width, 0);
-    path.quadraticBezierTo(controlPoint.dx, controlPoint.dy,
-        endPoint.dx, endPoint.dy);
+    path.quadraticBezierTo(
+        controlPoint.dx, controlPoint.dy, endPoint.dx, endPoint.dy);
 
     path.lineTo(0.0, 0.0);
     path.close();

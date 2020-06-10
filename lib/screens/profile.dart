@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medix/widgets/CardWithInfoBox.dart';
 
 import 'package:medix/widgets/convexBar.dart';
 import 'package:medix/widgets/infoBox.dart';
@@ -68,34 +69,15 @@ import 'package:medix/widgets/stackedCurveBar.dart';
         ),
 
         //email
-        Container(
-          padding: EdgeInsets.only(left: 20,top: 12,bottom: 12),
-          margin:EdgeInsets.all(15),
-          decoration: new BoxDecoration(
-              color:Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [BoxShadow(offset: Offset(0,3), blurRadius: 3, color: Colors.black.withOpacity(.1))]
-          ),
-          child: InfoBox("Email","manunavodaya123@gmail.com",
-              crossAxisAlignment:CrossAxisAlignment.start,),
-        ),
-
+        CardWithInfoBox("Email","manunavodaya123@gmail.com"),
         //address
-        Container(
-          padding: EdgeInsets.only(left: 20,top: 12,bottom: 12),
-          margin:EdgeInsets.all(15),
-          decoration: new BoxDecoration(
-              color:Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [BoxShadow(offset: Offset(0,3), blurRadius: 3, color: Colors.black.withOpacity(.1))]
-          ),
-          child: InfoBox("Address","Bengaluru, Karnataka",
-            crossAxisAlignment:CrossAxisAlignment.start,),
-        ),
+        CardWithInfoBox("Address","Bengaluru, Karnataka"),
       ],
     );
   }
 }
+
+
 
 
 
