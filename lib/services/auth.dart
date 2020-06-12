@@ -2,8 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 //create a class for this service
 class AuthService {
-  //first create instace of the firebase auth
+  //first create instance of the FireBase auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  //useful for persistence case.
+  //FireBase internally maintains sharedPreferences;
+  Future<FirebaseUser> get getUser async {
+    return await _auth.currentUser();
+  }
+
+  //Setting up Stream which listens to auth State Changes.
+  Stream<FirebaseUser> get user {
+    return _auth.onAuthStateChanged;
+  }
+
   //sign in with email and password
   Future<Map<String, dynamic>> signInWithEmailAndPass(email, password) async {
     Map<String, dynamic> data = {"success": false, "user": null};
@@ -41,7 +53,7 @@ class AuthService {
     }
     return data;
   }
-  //register with email and password
+//register with email and password
 
-  //signout
+//signout
 }

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:medix/screens/authenticate/login.dart';
 
+
 class Home extends StatelessWidget {
   final doctorImg = 'assets/images/doc.png';
   final violetColor = Color(0xFFA700FF);
 
-  BoxDecoration _decoration(context) => BoxDecoration(
-      // gradient: LinearGradient(
-      //   colors: [violetColor, Theme.of(context).primaryColor],
-      //   begin: Alignment(-1.0, -1.0),
-      //   end: Alignment(1.0, 1.0),
-      // ),
-      color: Theme.of(context).primaryColor);
+  BoxDecoration _decoration(context) =>
+      BoxDecoration(color: Theme.of(context).primaryColor);
   final colorWhite = TextStyle(color: Colors.white);
 
   Widget build(BuildContext context) {
@@ -53,11 +49,11 @@ class Home extends StatelessWidget {
                             title: "Sign In",
                             textColor: Color(0xFF1B14AA),
                             onPressed: () {
+//                                Navigator.pushNamed(context, "/login");
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Login()),
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()));
                             }),
                         Button(
                             title: "Sign Up",
@@ -74,12 +70,13 @@ class Home extends StatelessWidget {
   }
 }
 
-//buttin for the login/signUp
+//button for the login/signUp
 //@params title: text to display inside flat button
 class Button extends StatelessWidget {
   final String title;
   final Color textColor;
   final Function onPressed;
+
   Button({this.title, this.textColor, this.onPressed});
 
   @override

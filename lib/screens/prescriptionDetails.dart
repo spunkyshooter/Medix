@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:medix/models/percription.dart';
 import 'package:medix/utils/index.dart';
 import 'package:medix/widgets/CardWithInfoBox.dart';
+import 'package:medix/widgets/CustomCard.dart';
 import 'package:medix/widgets/convexBar.dart';
 
 class PrescriptionDetails extends StatelessWidget {
-  PrescriptionDetails({@required this.data});
+  PrescriptionDetails({@required this.pres});
 
-  final List<List<Map<String, String>>> data;
+  final PrescriptionModel pres;
+
+  List<Map<String, String>> _getFormattedList() {
+    //reshaping the data as needed
+    List<Map<String, String>> _data = [];
+    _data.add({"key": "Hospital", "value": pres.hospitalDetails["name"]});
+    _data.add({"key": "Address", "value": pres.hospitalDetails["city"]});
+    _data.add({"key": "Doctor", "value": pres.doctorDetails["name"]});
+    _data.add({"key": "Appointment Type", "value": pres.doctorDetails["type"]});
+    _data.add({"key": "Date", "value": pres.createdDate});
+    _data.add({"key": "Time", "value": pres.time});
+    _data.add({"key": "Expiry", "value": pres.expiryDate});
+    _data.add({"key": "Disease", "value": pres.disease.join(", ")});
+    _data.add({"key": "Symptoms", "value": pres.symptoms.join(", ")});
+    _data.add({"key": "Medication", "value": pres.medication});
+    _data.add({"key": "Instruction", "value": pres.instruction});
+
+    return _data;
+  }
 
   @override
   Widget build(BuildContext context) {
-    //reshaping the data as needed
-    List<Map<String, String>> _data = [];
-    _data.add({"key": "Hospital", "value": "KMS Hospital"});
-    _data.add({"key": "Address", "value": "Bengaluru, Karnataka"});
 
-    for (int i = 0; i < data.length; ++i) {
-      _data.add(data[i][0]);
-    }
-    for (int i = 0; i < data.length; ++i) {
-      _data.add(data[i][1]);
-    }
-
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text("Details"),
@@ -40,22 +48,13 @@ class PrescriptionDetails extends StatelessWidget {
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: _data
+          children: _getFormattedList()
               .map((item) => CardWithInfoBox(item["key"], item["value"]))
               .toList(),
         ),
-        Container(
+        //FILES
+        CustomCard(
           padding: EdgeInsets.only(left: 20, top: 12, bottom: 12),
-          margin: EdgeInsets.all(15),
-          decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                    offset: Offset(0, 3),
-                    blurRadius: 3,
-                    color: Colors.black.withOpacity(.1))
-              ]),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

@@ -1,0 +1,9 @@
+live data is managed by whom ?
+    Live data is linked with 1 doctor.
+    - hence we just need to show that doctors details
+
+
+Merge Temp Details
+Weight and Height
+    - Current Weight and Height in th profile Page
+    - Each Prescription will be also be having w and H.

@@ -1,9 +1,10 @@
-import 'package:medix/screens/landing.dart';
+import 'package:medix/models/UserModel.dart';
 import 'package:medix/services/auth.dart';
 import 'package:medix/widgets/TopBar.dart';
 import 'package:medix/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:medix/constants/theme.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,21 +28,15 @@ class _LoginState extends State<Login> {
   }
 
   _handleSignIn(BuildContext context) async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Landing(),
-        ));
-    /*
-    dynamic response = await _auth.signInWithEmailAndPass(
-        state["email"], state["password"]);
+    dynamic response =
+        await _auth.signInWithEmailAndPass(state["email"], state["password"]);
+
     if (response["success"] == true) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Landing(),
-          ));
+      final authModel = Provider.of<UserModel>(context, listen: false);
+      authModel.uid = response["user"].uid; //set the uid
+      Navigator.pushNamedAndRemoveUntil(context, '/landing', (route) => false);
     } else {
+
       Scaffold.of(context).showSnackBar(
         SnackBar(
             content: Text(
@@ -51,7 +46,6 @@ class _LoginState extends State<Login> {
             backgroundColor: Theme.of(context).primaryColor),
       );
     }
-    */
   }
 
   @override
@@ -62,8 +56,7 @@ class _LoginState extends State<Login> {
       body: Column(
         children: <Widget>[
           new TopBar(titleStyle: titleStyle),
-          new MyTextField(
-              id: 'email', onChange: onChange, hintText: "Email"),
+          new MyTextField(id: 'email', onChange: onChange, hintText: "Email"),
           new SizedBox(height: 10), //some space
           new MyTextField(
               id: 'password', onChange: onChange, hintText: "Password"),
@@ -104,6 +97,7 @@ class MyTextField extends StatelessWidget {
   final Function onChange;
   final String hintText;
   final String id;
+
   const MyTextField({
     this.id,
     this.onChange,
@@ -134,7 +128,9 @@ class MyTextField extends StatelessWidget {
 
 class BtnWithSnackbar extends StatelessWidget {
   BtnWithSnackbar({this.onPressed});
+
   final Function onPressed;
+
   @override
   Widget build(BuildContext context) {
     return FlatButton(

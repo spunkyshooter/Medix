@@ -7,19 +7,20 @@ class ConvexBar extends StatelessWidget {
 
   final double height;
   final Widget child;
-  Color color;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    color = color ?? Theme.of(context).primaryColor;
     return ClipPath(
       clipper: WavyClipper(),
       child: child != null
           ? child
           : SizedBox(
-              height: height,
-              child: Container(color: color), //Theme.of(context).primaryColor
-            ),
+        height: height,
+        child: Container(color: color ?? Theme
+            .of(context)
+            .primaryColor), //Theme.of(context).primaryColor
+      ),
     );
   }
 }
