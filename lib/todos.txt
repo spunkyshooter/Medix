@@ -1,9 +1,90 @@
-live data is managed by whom ?
-    Live data is linked with 1 doctor.
-    - hence we just need to show that doctors details
 
-
-Merge Temp Details
 Weight and Height
     - Current Weight and Height in th profile Page
     - Each Prescription will be also be having w and H.
+
+Change of OwnerShip
+- Users - DONE
+    - Live Data us managed by a doctor, If the user decides that he doesn't want
+      this particular doctor to have the data managed, then he can simply revoke the permissions.
+    ️
+- Doctors DONE
+    - If for some case, doctor decides that he wants to change the ownership of the Live Data.
+      then he can do that by getting permission from the user.
+
+Basically user have the control of their data.
+
+
+PHR (personal Health Record) instead of Electronic Health Record
+
+
+Timeline of Health History
+1.Mild Heart Attack
+|
+|
+2. Allergy from  {date} - {date}
+|
+|
+3.
+
+Introduction Screen
+
+Emergency Contact Person
+Family Doctor
+Medical equipment
+comments field in prescription:
+    ex: -to say it is redirected to so & so department
+        -Need Blood Test.
+
+Features:
+-E-Prescribing
+https://www.adsc.com/blog/how-do-ehr-systems-work
+
+
+NOTES:
+
+A 71-year-old female in Pennsylvania was accidentally taking an antipsychotic for three months,
+instead of her anti-hypertensive medication. This led to ambulatory dysfunction, mood swings,
+tremors and many other physiological changes because of the medication error in manual
+prescription.
+
+It’s high time for doctors to discontinue with the option of writing medical prescriptions
+manually. With e-prescribing, doctors can significantly prevent drug prescription errors and
+instantly reconcile a patient’s medication history. The medication reconciliation process
+becomes easier, as there is no need to flip through cumbersome prescription papers stored in a
+physical folder.
+
+Electronic prescriptions also eliminate chances of wrong drugs being dispensed due to
+handwriting errors. This not only helps doctors but even patients who can have trust over their
+doctor that right drugs have been selected from extensive formulary stored in hospital
+information systems like Med-E-Nova.
+
+
+Maintaining medical records manually leads to duplication of efforts and loss of productivity.
+
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5297955/
+
+"Making sure that clinical notes are up to date and completed accurately with sufficient
+information will ensure that the proper information is provided to all relevant healthcare
+workers and will aid them in potential future decisions. This, in turn, will benefit the
+patient through less time lost on repeating tests and by averting inaccurate diagnoses
+or the prescription of inappropriate treatments."
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3959913/
+Electronic Health Records Access During a Disaster
+
+
+https://link.springer.com/chapter/10.1007/978-981-13-6052-7_2#:~:text=3%20Proposed%20Solution%3A%20E%2DBRACE,to%20link%20the%20patient's%20EHR.
+E-BRACE: A Secure Electronic Health Record Access Method in Medical Emergency
+
+Future Work
+1. Transcription
+https://www.adsc.com/blog/how-do-ehr-systems-work
+Doing so allows doctors to speak and see their words generated in real time on the screen
+to fill out the patient record.
+
+2. BlockChain Implementation
+
+
+

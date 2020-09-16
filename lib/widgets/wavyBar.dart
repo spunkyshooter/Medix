@@ -9,7 +9,7 @@ class WavyBar extends StatelessWidget {
       clipper: WavyClipper(),
       child: SizedBox(
         height: 60,
-        child: Container(color: Theme.of(context).primaryColor),
+        child: Container(color: Theme.of(context).primaryColor,),
       ),
     );
   }

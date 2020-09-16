@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:medix/models/Appointment.dart';
 import 'package:medix/models/UserModel.dart';
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 class MyAppointment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String uid = Provider.of<UserModel>(context).uid;
+    final String uid = Provider.of<FirebaseUser>(context).uid;
+    print("appointment");
     return StreamProvider<QuerySnapshot>.value(
       value: new DatabaseService(uid: uid).appointment,
       child: Consumer<QuerySnapshot>(builder: (context, data, child) {
@@ -132,7 +134,7 @@ class Appointments extends StatelessWidget {
                           children: <Widget>[
                             InfoBox(
                               "Doctor",
-                              "Dr.Bob",
+                              appointment.doctor["name"],
                               crossAxisAlignment: CrossAxisAlignment.start,
                               valueColor: hexToColor("3b3b3b"),
                             ),
@@ -142,14 +144,16 @@ class Appointments extends StatelessWidget {
                                 : InfoBox(
                                     //Else show status
                                     "Status",
-                                    appointment.cancelled
+                                    appointment.status == 2
                                         ? "Cancelled"
-                                        : "Completed",
+                                        : appointment.status == 1
+                                            ? "Completed"
+                                            : "Not Visited",
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    valueColor: appointment.cancelled
-                                        ? reddish
-                                        : Colors.green,
+                                    valueColor: appointment.status == 1
+                                        ? Colors.green
+                                        : reddish, //0 or 2 case
                                   ),
                           ],
                         ),

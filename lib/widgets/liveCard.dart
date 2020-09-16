@@ -4,6 +4,7 @@ import 'package:medix/utils/index.dart';
 class LiveCard extends StatelessWidget {
   LiveCard(this.title, this.value, this.unit, this.status,
       {this.color, this.bgClr, this.img});
+
   final String title;
   final String value;
   final String status;
@@ -31,8 +32,7 @@ class LiveCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           image: new DecorationImage(
               image: new AssetImage('assets/images/$img'),
-              alignment: Alignment.centerRight
-          ),
+              alignment: Alignment.centerRight),
         ),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

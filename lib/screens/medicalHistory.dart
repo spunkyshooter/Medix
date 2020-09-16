@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:medix/models/DateTimeUtils.dart';
 import 'package:medix/models/UserModel.dart';
@@ -45,7 +46,8 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   @override
   Widget build(BuildContext context) {
 //    Size size = MediaQuery.of(context).size;
-    final String uid = Provider.of<UserModel>(context).uid;
+    final String uid = Provider.of<FirebaseUser>(context).uid;
+    print('medicalHistory');
     return StreamProvider<QuerySnapshot>.value(
       value: DatabaseService(uid: uid).prescription(dateRange),
       child: Consumer<QuerySnapshot>(
@@ -115,8 +117,11 @@ class _MedicalHistoryState extends State<MedicalHistory> {
                                   children: [
                                     ColumnBlock("Date", pres.createdDate,
                                         "Doctor", pres.doctorDetails["name"]),
-                                    ColumnBlock("Time", pres.time,
-                                        "Appointment Type", pres.doctorDetails["type"]),
+                                    ColumnBlock(
+                                        "Time",
+                                        pres.time,
+                                        "Appointment Type",
+                                        pres.doctorDetails["type"]),
                                     ColumnBlock("Expiry", pres.expiryDate,
                                         "Place", pres.hospitalDetails["city"])
                                   ],
@@ -164,5 +169,3 @@ class _MedicalHistoryState extends State<MedicalHistory> {
     );
   }
 }
-
-

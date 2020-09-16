@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:medix/screens/authenticate/login.dart';
 
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
-class Home extends StatelessWidget {
+class _HomeState extends State<Home> {
   final doctorImg = 'assets/images/doc.png';
   final violetColor = Color(0xFFA700FF);
-
-  BoxDecoration _decoration(context) =>
-      BoxDecoration(color: Theme.of(context).primaryColor);
   final colorWhite = TextStyle(color: Colors.white);
 
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Container(
         //wrapped in container, because we want gradient
-        decoration: _decoration(context),
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,19 +47,19 @@ class Home extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Button(
-                            title: "Sign In",
-                            textColor: Color(0xFF1B14AA),
-                            onPressed: () {
-//                                Navigator.pushNamed(context, "/login");
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()));
-                            }),
+                          title: "Sign In",
+                          textColor: Color(0xFF1B14AA),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/login");
+                          },
+                        ),
                         Button(
-                            title: "Sign Up",
-                            textColor: Color(0xFF1B14AA),
-                            onPressed: () {}),
+                          title: "Sign Up",
+                          textColor: Color(0xFF1B14AA),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/register");
+                          },
+                        ),
                       ],
                     )
                   ],

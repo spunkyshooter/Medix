@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medix/widgets/stackedCurveBar.dart';
 import 'package:medix/widgets/wavyBar.dart';
 
-
 class TopBar extends StatelessWidget {
   const TopBar({
     Key key,
@@ -35,31 +34,31 @@ class TopBar extends StatelessWidget {
           ),
         ),
         Positioned(
-            left: 10,
-            top: 100,
-            child: Row(children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white.withAlpha(128),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+          left: 10,
+          top: 100,
+          child: Row(children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white.withAlpha(128),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "Sign In",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ]),)
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              "Sign In",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+            ),
+          ]),
+        )
       ],
     );
   }
 }
-

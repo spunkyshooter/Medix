@@ -5,7 +5,6 @@ class PatientModel {
   String age, lastVisit;
 
   PatientModel.fromJson(json) {
-    print(json.toString());
     uid = json["uid"];
     name = json["name"];
     phone = json["phone"];

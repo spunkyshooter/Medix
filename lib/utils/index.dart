@@ -7,7 +7,7 @@ Color hexToColor(String code) {
 
 Color darkenColor (Color color,double factor){
   //not took care of 255
-  //BEcareful since value shoud be in range of 0-255
+  //Becareful since value shoud be in range of 0-255
   int r = (color.red * factor).toInt();
   int g = (color.green * factor).toInt();
   int b = (color.blue * factor).toInt();
@@ -15,3 +15,4 @@ Color darkenColor (Color color,double factor){
   Color darkShade = Color.fromRGBO(r, g, b, opacity);
   return darkShade;
 }
+

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medix/models/PatientModel.dart';
 import 'package:medix/models/UserModel.dart';
 import 'package:medix/services/Database.dart';
+import 'package:medix/services/auth.dart';
 import 'package:medix/widgets/CardWithInfoBox.dart';
 import 'package:medix/widgets/CustomCard.dart';
 
@@ -17,8 +19,14 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String uid = Provider.of<UserModel>(context).uid;
+    print("profile page");
+    final String uid = Provider.of<FirebaseUser>(context).uid;
 
+    var _requestsProvider = Provider.of<DocumentSnapshot>(context);
+    if (_requestsProvider == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+    Map<String, dynamic> _requests = _requestsProvider.data;
     return StreamProvider<DocumentSnapshot>.value(
       value: new DatabaseService(uid: uid).patient,
       child: Consumer<DocumentSnapshot>(
@@ -26,7 +34,6 @@ class Profile extends StatelessWidget {
           if (document == null) {
             return Center(child: CircularProgressIndicator());
           }
-          print({"document": document.toString()});
           final PatientModel user = PatientModel.fromJson(document.data);
           return ListView(
             children: <Widget>[
@@ -41,8 +48,10 @@ class Profile extends StatelessWidget {
                   //Image and name details
                   Positioned(
                     top: 40,
-                    left: 15, //same as margin in the details widget
+                    left: 15,
+                    right: 15, //same as margin in the details widget
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Container(
                           width: 70.0,
@@ -73,6 +82,22 @@ class Profile extends StatelessWidget {
                                   fontWeight: FontWeight.w600),
                             )
                           ],
+                        ),
+                        Expanded(
+                          child: Container(color: Colors.redAccent),
+                        ),
+                        //please take all the available space, since flutter doesn't have margin auto
+                        FlatButton(
+                          textColor: Colors.white,
+                          onPressed: () {
+                            new AuthService().signOut();
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Text("Logout "),
+                              Icon(Icons.exit_to_app)
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -115,8 +140,10 @@ class Profile extends StatelessWidget {
               CardWithInfoBox("Email", user.email),
               //address
               CardWithInfoBox("Address", user.address),
-              //Check whether you have temporary record stored.
-              SyncDataCard(uid: user.uid)
+              //Requests
+              _requests != null && _requests["accepted"] == -1
+                  ? RequestBox(requests: _requests)
+                  : SizedBox(height: 0),
             ],
           );
         },
@@ -125,40 +152,74 @@ class Profile extends StatelessWidget {
   }
 }
 
-class SyncDataCard extends StatefulWidget {
-  SyncDataCard({this.uid});
+class RequestBox extends StatelessWidget {
+  RequestBox({this.requests});
 
-  final String uid;
+  final Map<String, dynamic> requests;
 
-  @override
-  _SyncDataCardState createState() => _SyncDataCardState();
-}
+  Function setRequest(BuildContext context, String uid, int value) {
+    DatabaseService(uid: uid).acceptOrDeclineRequest(value);
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          value == 1 ? "Accepted" : "Declined",
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
 
-class _SyncDataCardState extends State<SyncDataCard> {
-  final Map<String, dynamic> state = {"loading": false, "dataExists": null};
-//
-//  _getDetails() {
-//    setState(() {
-//      state["loading"] = true;
-//    });
-//  }
+  // new DatabaseService(uid: uid).acceptOrDeclineRequest(1);
+  Widget btn(Color color, String text, Function onPressed) {
+    return OutlineButton(
+      textColor: color,
+      disabledTextColor: Colors.white,
+      borderSide: BorderSide(
+        color: color,
+      ),
+      highlightColor: color.withOpacity(.1),
+      highlightedBorderColor: color,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      color: color,
+      onPressed: onPressed,
+      child: Center(child: Text(text)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final String uid = Provider.of<UserModel>(context).uid;
     return CustomCard(
       padding: EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text("Sync Emergency Data"), // "You have temporary record"
-          RaisedButton(
-            disabledColor: Colors.grey,
-            color: Theme.of(context).accentColor,
-            onPressed: () {},
-            child: FittedBox(child: Center(child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CircularProgressIndicator(backgroundColor: Colors.white,),
-            ))), //"Merge Details"
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Grant Permissions",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          InfoBox(
+            "Doctor",
+            requests["doctorName"],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          SizedBox(height: 10),
+          InfoBox(
+            "Reason",
+            requests["message"],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              btn(Colors.green, "Accept ✔", () {
+                setRequest(context, uid, 1);
+              }),
+              btn(Colors.red, "Decline ❌", () {
+                setRequest(context, uid, 0);
+              }),
+            ],
           )
         ],
       ),

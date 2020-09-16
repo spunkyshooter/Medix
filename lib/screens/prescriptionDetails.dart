@@ -30,7 +30,6 @@ class PrescriptionDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Details"),
@@ -71,8 +70,12 @@ class PrescriptionDetails extends StatelessWidget {
                     width: 80,
                     height: 80,
                     child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage("assets/images/backPain.jpg"),
+                      )),
                       margin: EdgeInsets.all(5),
-                      color: Colors.blueAccent,
                     ),
                   ),
                   SizedBox(

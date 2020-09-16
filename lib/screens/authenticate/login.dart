@@ -1,10 +1,9 @@
-import 'package:medix/models/UserModel.dart';
 import 'package:medix/services/auth.dart';
+import 'package:medix/widgets/BtnWithSnackBar.dart';
 import 'package:medix/widgets/TopBar.dart';
 import 'package:medix/utils/index.dart';
 import 'package:flutter/material.dart';
-import 'package:medix/constants/theme.dart';
-import 'package:provider/provider.dart';
+import 'package:medix/widgets/MedixTextFormField.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -19,7 +18,11 @@ class _LoginState extends State<Login> {
     fontSize: 32,
     fontWeight: FontWeight.w800,
   );
-  final Map<String, dynamic> state = {"email": null, "password": null};
+  final Map<String, dynamic> state = {
+    "email": null,
+    "password": null,
+    "loading": false
+  };
 
   onChange(id, text) {
     setState(() {
@@ -28,15 +31,19 @@ class _LoginState extends State<Login> {
   }
 
   _handleSignIn(BuildContext context) async {
+    setState(() {
+      state["loading"] = true;
+    });
     dynamic response =
         await _auth.signInWithEmailAndPass(state["email"], state["password"]);
 
-    if (response["success"] == true) {
-      final authModel = Provider.of<UserModel>(context, listen: false);
-      authModel.uid = response["user"].uid; //set the uid
-      Navigator.pushNamedAndRemoveUntil(context, '/landing', (route) => false);
-    } else {
+    setState(() {
+      state["loading"] = false;
+    });
+    print("login");
+    print(response.toString());
 
+    if (response["success"] == false) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
             content: Text(
@@ -45,6 +52,8 @@ class _LoginState extends State<Login> {
             ),
             backgroundColor: Theme.of(context).primaryColor),
       );
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -56,10 +65,26 @@ class _LoginState extends State<Login> {
       body: Column(
         children: <Widget>[
           new TopBar(titleStyle: titleStyle),
-          new MyTextField(id: 'email', onChange: onChange, hintText: "Email"),
-          new SizedBox(height: 10), //some space
-          new MyTextField(
-              id: 'password', onChange: onChange, hintText: "Password"),
+          new MedixTextFormField(
+            id: 'email',
+            onChange: onChange,
+            labelText: "Email",
+            keyboardType: TextInputType.emailAddress,
+            prefixIcon: Icon(
+              Icons.email,
+              color: Colors.blueAccent,
+            ),
+          ),
+          new MedixTextFormField(
+            id: 'password',
+            onChange: onChange,
+            labelText: "Password",
+            obscureText: true,
+            prefixIcon: Icon(
+              Icons.vpn_key,
+              color: Colors.blueAccent,
+            ),
+          ),
           Align(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 14.0),
@@ -69,81 +94,39 @@ class _LoginState extends State<Login> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Sign In'),
-                  BtnWithSnackbar(onPressed: _handleSignIn),
-                ]),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Sign In'),
+                BtnWithSnackBar(
+                  onPressed: _handleSignIn,
+                  loading: state["loading"],
+                  child: Icon(
+                    Icons.arrow_forward,
+                  ),
+                ),
+              ],
+            ),
           ),
-          RichText(
-            text: TextSpan(children: <TextSpan>[
-              TextSpan(
+          FlatButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/register");
+            },
+            child: RichText(
+              text: TextSpan(children: <TextSpan>[
+                TextSpan(
                   text: "Don't have account?  ",
-                  style: TextStyle(color: Colors.black)),
-              TextSpan(
-                text: "Register",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-            ]),
+                  style: TextStyle(color: Colors.black),
+                ),
+                TextSpan(
+                  text: "Register",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ]),
+            ),
           )
         ],
       ),
-    );
-  }
-}
-
-class MyTextField extends StatelessWidget {
-  final Function onChange;
-  final String hintText;
-  final String id;
-
-  const MyTextField({
-    this.id,
-    this.onChange,
-    this.hintText,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _secondaryColor = secondaryColor(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextField(
-        decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(color: _secondaryColor),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: _secondaryColor)),
-            enabledBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-        onChanged: (text) {
-          onChange(id, text);
-        },
-      ),
-    );
-  }
-}
-
-class BtnWithSnackbar extends StatelessWidget {
-  BtnWithSnackbar({this.onPressed});
-
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-      color: Theme.of(context).accentColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      child: Icon(
-        Icons.arrow_forward,
-        // color: Colors.black,
-      ),
-      onPressed: () {
-        onPressed(context);
-      },
     );
   }
 }
